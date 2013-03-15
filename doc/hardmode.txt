@@ -45,4 +45,7 @@ OPTIONS                                        *hardmode-options*
 |'g:HardMode_level'|        If set to 'wannabe' arrow keys disabled, but not
                             hjkl etc.
 
+|'g:HardMode_hjklLimit'|    Amount of times hjkl may be repeated before they're
+                            blocked.
+
  vim:tw=78:ts=8:ft=help:norl:
