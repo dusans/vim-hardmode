@@ -19,6 +19,10 @@ if !exists('g:HardMode_echo')
     let g:HardMode_echo = 1
 end
 
+if !exists('g:HardMode_hjklLimit')
+    let g:HardMode_hjklLimit = 1
+end
+
 if !exists('g:HardMode_hardmodeMsg')
     let g:HardMode_hardmodeMsg = "VIM: Hard Mode [ ':call EasyMode()' to exit ]"
 end
@@ -31,6 +35,42 @@ fun! HardModeEcho(message)
     if g:HardMode_echo
         echo a:message
     end
+endfun
+
+" Only allow HJKL once at a time
+fun! HardModeHJKL(type)
+  if !exists('g:HardMode_lastPos')
+    let g:HardMode_lastPos = getpos('.')
+  endif
+  if !exists('g:HardMode_lastType')
+    let g:HardMode_lastType = ''
+  endif
+  if !exists('g:HardMode_hjklCount')
+    let g:HardMode_hjklCount = 0
+  end
+
+  if g:HardMode_lastType == a:type
+    let g:HardMode_hjklCount += 1
+  else
+    let g:HardMode_hjklCount = 0
+  end
+
+
+  let [bufnum, lnum, col, off] = getpos('.')
+  let col += off
+  let diff = abs(g:HardMode_lastPos[1]-lnum)+abs(g:HardMode_lastPos[2]-col)
+  let allowed = g:HardMode_lastPos[0]!=bufnum
+              \  || diff!=1
+              \  || v:count>1
+              \  || g:HardMode_hjklCount < g:HardMode_hjklLimit
+              \  || g:HardMode_lastType!=a:type
+
+  if allowed
+    let g:HardMode_lastPos = [bufnum, lnum, col, off]
+    let g:HardMode_lastType = a:type
+  endif
+
+  return allowed ? a:type : "\<Esc>:call HardModeEcho(g:HardMode_hardmodeMsg)\<CR>"
 endfun
 
 fun! NoArrows()
@@ -60,17 +100,17 @@ endfun
 
 fun! NoLetters()
 
-    vnoremap <buffer> h <Esc>:call HardModeEcho(g:HardMode_hardmodeMsg)<CR>
-    vnoremap <buffer> j <Esc>:call HardModeEcho(g:HardMode_hardmodeMsg)<CR>
-    vnoremap <buffer> k <Esc>:call HardModeEcho(g:HardMode_hardmodeMsg)<CR>
-    vnoremap <buffer> l <Esc>:call HardModeEcho(g:HardMode_hardmodeMsg)<CR>
+    vnoremap <expr> <buffer> h HardModeHJKL('h')
+    vnoremap <expr> <buffer> j HardModeHJKL('j')
+    vnoremap <expr> <buffer> k HardModeHJKL('k')
+    vnoremap <expr> <buffer> l HardModeHJKL('l')
     vnoremap <buffer> - <Esc>:call HardModeEcho(g:HardMode_hardmodeMsg)<CR>
     vnoremap <buffer> + <Esc>:call HardModeEcho(g:HardMode_hardmodeMsg)<CR>
 
-    nnoremap <buffer> h <Esc>:call HardModeEcho(g:HardMode_hardmodeMsg)<CR>
-    nnoremap <buffer> j <Esc>:call HardModeEcho(g:HardMode_hardmodeMsg)<CR>
-    nnoremap <buffer> k <Esc>:call HardModeEcho(g:HardMode_hardmodeMsg)<CR>
-    nnoremap <buffer> l <Esc>:call HardModeEcho(g:HardMode_hardmodeMsg)<CR>
+    nnoremap <expr> <buffer> h HardModeHJKL('h')
+    nnoremap <expr> <buffer> j HardModeHJKL('j')
+    nnoremap <expr> <buffer> k HardModeHJKL('k')
+    nnoremap <expr> <buffer> l HardModeHJKL('l')
     nnoremap <buffer> - <Esc>:call HardModeEcho(g:HardMode_hardmodeMsg)<CR>
     nnoremap <buffer> + <Esc>:call HardModeEcho(g:HardMode_hardmodeMsg)<CR>
 
