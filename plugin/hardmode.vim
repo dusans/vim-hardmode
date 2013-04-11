@@ -100,17 +100,17 @@ endfun
 
 fun! NoLetters()
 
-    vnoremap <expr> <buffer> h HardModeHJKL('h')
-    vnoremap <expr> <buffer> j HardModeHJKL('j')
-    vnoremap <expr> <buffer> k HardModeHJKL('k')
-    vnoremap <expr> <buffer> l HardModeHJKL('l')
+    vnoremap <silent> <expr> <buffer> h HardModeHJKL('h')
+    vnoremap <silent> <expr> <buffer> j HardModeHJKL('j')
+    vnoremap <silent> <expr> <buffer> k HardModeHJKL('k')
+    vnoremap <silent> <expr> <buffer> l HardModeHJKL('l')
     vnoremap <buffer> - <Esc>:call HardModeEcho(g:HardMode_hardmodeMsg)<CR>
     vnoremap <buffer> + <Esc>:call HardModeEcho(g:HardMode_hardmodeMsg)<CR>
 
-    nnoremap <expr> <buffer> h HardModeHJKL('h')
-    nnoremap <expr> <buffer> j HardModeHJKL('j')
-    nnoremap <expr> <buffer> k HardModeHJKL('k')
-    nnoremap <expr> <buffer> l HardModeHJKL('l')
+    nnoremap <silent> <expr> <buffer> h HardModeHJKL('h')
+    nnoremap <silent> <expr> <buffer> j HardModeHJKL('j')
+    nnoremap <silent> <expr> <buffer> k HardModeHJKL('k')
+    nnoremap <silent> <expr> <buffer> l HardModeHJKL('l')
     nnoremap <buffer> - <Esc>:call HardModeEcho(g:HardMode_hardmodeMsg)<CR>
     nnoremap <buffer> + <Esc>:call HardModeEcho(g:HardMode_hardmodeMsg)<CR>
 
