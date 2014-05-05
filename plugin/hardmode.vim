@@ -121,7 +121,7 @@ fun! NoLetters()
 endfun
 
 fun! NoBackspace()
-    set backspace=0
+    set backspace=indent
 endfun
 
 fun! HardMode()
