@@ -23,6 +23,10 @@ if !exists('g:HardMode_hjklLimit')
     let g:HardMode_hjklLimit = 1
 end
 
+if !exists('g:HardMode_disable_arrows')
+    let g:HardMode_disable_arrows = 1
+end
+
 if !exists('g:HardMode_hardmodeMsg')
     let g:HardMode_hardmodeMsg = "VIM: Hard Mode [ ':call EasyMode()' to exit ]"
 end
@@ -117,14 +121,14 @@ fun! NoLetters()
 endfun
 
 fun! NoBackspace()
-
     set backspace=0
-
 endfun
 
 fun! HardMode()
 
-    call NoArrows()
+    if g:HardMode_disable_arrows
+        call NoArrows()
+    end
 
     if g:HardMode_level != 'wannabe'
         call NoLetters()
